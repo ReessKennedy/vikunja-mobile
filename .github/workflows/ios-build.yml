@@ -19,9 +19,20 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.16.9'  # Use older, more stable version
+        flutter-version: '3.22.2'  # Use modern Flutter with Dart 3.3.0+
         channel: stable
         cache: false  # Disable cache to avoid conflicts
+        
+    - name: Update Flutter version constraint
+      run: |
+        # Update pubspec.yaml to use modern Flutter
+        sed -i '' 's/flutter: ">=3.16.0"/flutter: ">=3.22.0"/' pubspec.yaml
+        
+    - name: Restore modern dependencies
+      run: |
+        # Restore modern package versions
+        sed -i '' 's/http: \^1.2.0/http: ^1.2.1/' pubspec.yaml
+        sed -i '' 's/intl: \^0.18.1.*/intl: ^0.20.2/' pubspec.yaml
         
     - name: Flutter doctor
       run: flutter doctor -v
@@ -41,17 +52,33 @@ jobs:
         flutter pub get
         flutter pub deps
         
-    - name: Clean and prepare iOS dependencies
+    - name: Clean and prepare iOS dependencies  
       run: |
         cd ios
         pod cache clean --all
         pod repo remove trunk || true
         pod setup
         
-    - name: Install iOS dependencies with legacy resolver
+    - name: Try installing with different CocoaPods strategies
       run: |
         cd ios
-        pod install --repo-update --verbose --allow-root
+        echo "Trying pod install with repo update..."
+        pod install --repo-update --verbose || {
+          echo "Failed. Trying without repo update..."
+          pod install --verbose || {
+            echo "Failed. Trying with --allow-root..."
+            pod install --allow-root --verbose || {
+              echo "Failed. Trying legacy resolver..."
+              pod install --verbose --deployment || {
+                echo "All strategies failed. Showing detailed error info..."
+                pod --version
+                pod repo list
+                cat Podfile
+                exit 1
+              }
+            }
+          }
+        }
         
     - name: Build iOS (without code signing)
       run: |
