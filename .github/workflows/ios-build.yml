@@ -82,7 +82,23 @@ jobs:
         
     - name: Build iOS (without code signing)
       run: |
-        flutter build ios --release --no-codesign --verbose
+        echo "🚀 Starting iOS build..."
+        flutter build ios --release --no-codesign --verbose 2>&1 | tee ios_build.log || {
+          echo "❌ iOS build failed. Showing detailed error information..."
+          echo "📋 Last 100 lines of build log:"
+          tail -100 ios_build.log
+          echo "🔍 Searching for specific error patterns..."
+          echo "📱 Swift errors:"
+          grep -i "swift.*error" ios_build.log || echo "No Swift errors found"
+          echo "📱 Xcode errors:" 
+          grep -i "error.*xcode" ios_build.log || echo "No Xcode errors found"
+          echo "📱 Compilation errors:"
+          grep -i "compilation.*failed\|error:" ios_build.log | head -20 || echo "No compilation errors found"
+          echo "📱 Build summary:"
+          grep -i "error.*count\|warning.*count" ios_build.log || echo "No error counts found"
+          exit 1
+        }
+        echo "✅ iOS build completed successfully!"
         
     - name: Create unsigned IPA
       run: |
