@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  http: ^1.2.1
+  http: ^1.2.0
   after_layout: ^1.2.0
   intl: ^0.18.1  # Use older version compatible with Dart 3.2.6
   # Temporarily disable packages that might cause iOS conflicts
