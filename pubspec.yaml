@@ -30,20 +30,20 @@ dependencies:
   flutter_keyboard_visibility: ^6.0.0
   dotted_border: ^2.1.0
   url_launcher: ^6.2.5
-  # workmanager: ^0.5.2
+  workmanager: ^0.5.2  # Restored - used in main.dart
   permission_handler: ^11.3.0
-  dynamic_color: ^1.7.0
+  dynamic_color: ^1.7.0  # Restored - used in main.dart
   # flutter_widget_from_html: ^0.15.2
-  # flutter_downloader: ^1.11.6
+  flutter_downloader: ^1.11.6  # Restored - used in main.dart
   # meta: ^1.11.0  # Remove explicit meta dependency - provided by Flutter SDK
-  # timezone: ^0.10.0
+  timezone: ^0.10.0  # Restored - used in main.dart
   json_annotation: ^4.8.1
   collection: ^1.18.0
   # cupertino_http: ^2.0.2
   # cronet_http: ^1.2.0
   # package_info_plus: ^8.2.1  # Requires Dart >=3.3.0, but Flutter 3.16.9 has Dart 3.2.6
   # html_editor_enhanced: ^2.6.0
-  # sentry_flutter: ^8.9.0
+  sentry_flutter: ^8.9.0  # Restored - used in main.dart
 
 # Temporarily disable dependency overrides to resolve conflicts
 # dependency_overrides:
