@@ -1,0 +1,54 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-ios:
+    name: Build iOS App
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        cache: true
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Build iOS (without code signing)
+      run: |
+        flutter build ios --release --no-codesign
+        
+    - name: Create unsigned IPA
+      run: |
+        cd build/ios/iphoneos
+        mkdir Payload
+        cp -r Runner.app Payload/
+        zip -r app-unsigned.ipa Payload/
+        
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-unsigned-ipa
+        path: build/ios/iphoneos/app-unsigned.ipa
+        retention-days: 30
+        
+    - name: Build info
+      run: |
+        echo "✅ iOS build completed successfully!"
+        echo "📱 Download the unsigned IPA from the Actions artifacts"
+        echo "ℹ️  To install: You'll need to sign this IPA with your Apple ID using tools like:"
+        echo "   - Xcode (if you have it)"
+        echo "   - AltStore"
+        echo "   - Sideloadly"
+        echo "   - Or set up proper code signing in this workflow" 
