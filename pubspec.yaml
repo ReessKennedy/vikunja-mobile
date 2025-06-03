@@ -58,15 +58,17 @@ dev_dependencies:
     sdk: flutter
     version: any
   test: ^1.24.9
-  flutter_launcher_icons: ^0.14.3
+  # Temporarily remove flutter_launcher_icons due to path dependency conflict with Flutter 3.16.9
+  # flutter_launcher_icons: ^0.14.3
 
-flutter_icons:
-  image_path: "assets/vikunja_logo.png"
-  image_path_ios: "assets/vikunja_ios.png"
-  android: true
-  ios: true
-  adaptive_icon_background: "#FF455486"
-  adaptive_icon_foreground: "assets/vikunja_logo_adaptive.png"
+# Temporarily disable flutter_icons configuration due to dependency conflicts
+# flutter_icons:
+#   image_path: "assets/vikunja_logo.png"
+#   image_path_ios: "assets/vikunja_ios.png"
+#   android: true
+#   ios: true
+#   adaptive_icon_background: "#FF455486"
+#   adaptive_icon_foreground: "assets/vikunja_logo_adaptive.png"
 
 flutter:
   uses-material-design: true
