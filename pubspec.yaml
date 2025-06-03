@@ -35,7 +35,7 @@ dependencies:
   # dynamic_color: ^1.7.0
   # flutter_widget_from_html: ^0.15.2
   # flutter_downloader: ^1.11.6
-  meta: ^1.11.0
+  # meta: ^1.11.0  # Remove explicit meta dependency - provided by Flutter SDK
   # timezone: ^0.10.0
   json_annotation: ^4.8.1
   collection: ^1.18.0
