@@ -41,7 +41,7 @@ dependencies:
   collection: ^1.18.0
   # cupertino_http: ^2.0.2
   # cronet_http: ^1.2.0
-  package_info_plus: ^8.2.1
+  # package_info_plus: ^8.2.1  # Requires Dart >=3.3.0, but Flutter 3.16.9 has Dart 3.2.6
   # html_editor_enhanced: ^2.6.0
   # sentry_flutter: ^8.9.0
 
