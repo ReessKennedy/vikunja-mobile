@@ -19,37 +19,48 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
+        flutter-version: '3.16.9'  # Use older, more stable version
         channel: stable
-        cache: true
+        cache: false  # Disable cache to avoid conflicts
+        
+    - name: Flutter doctor
+      run: flutter doctor -v
+        
+    - name: Clean everything
+      run: |
+        flutter clean
+        rm -rf ~/.pub-cache
+        rm -rf ios/Pods
+        rm -rf ios/Podfile.lock
+        rm -rf ios/.symlinks
+        rm -rf ios/Flutter/Flutter.framework
+        rm -rf ios/Flutter/Flutter.podspec
         
     - name: Install dependencies
-      run: flutter pub get
-      
+      run: |
+        flutter pub get
+        flutter pub deps
+        
     - name: Clean and prepare iOS dependencies
       run: |
         cd ios
-        rm -rf Pods
-        rm -rf Podfile.lock
-        rm -rf .symlinks
         pod cache clean --all
+        pod repo remove trunk || true
+        pod setup
         
-    - name: Update CocoaPods repo
-      run: |
-        pod repo update
-        
-    - name: Install iOS dependencies
+    - name: Install iOS dependencies with legacy resolver
       run: |
         cd ios
-        pod install --repo-update --verbose
+        pod install --repo-update --verbose --allow-root
         
     - name: Build iOS (without code signing)
       run: |
-        flutter build ios --release --no-codesign
+        flutter build ios --release --no-codesign --verbose
         
     - name: Create unsigned IPA
       run: |
         cd build/ios/iphoneos
-        mkdir Payload
+        mkdir -p Payload
         cp -r Runner.app Payload/
         zip -r app-unsigned.ipa Payload/
         
