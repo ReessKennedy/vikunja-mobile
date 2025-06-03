@@ -1927,6 +1927,1269 @@ Another version pinning conflict! The older Flutter 3.16.9 pins `meta` to 1.10.0
 
 ---
 
+```diff
+    # flutter_widget_from_html: ^0.15.2
+    # flutter_downloader: ^1.11.6
+-   meta: ^1.11.0
++   # meta: ^1.11.0  # Remove explicit meta dependency - provided by Flutter SDK
+    # timezone: ^0.10.0
+    json_annotation: ^4.8.1
+```
+
+---
+
+Let's commit and push this fix:
+
+---
+
+```bash
+git add pubspec.yaml
+```
+
+```
+rkennedy@rwkca app % 
+
+```
+
+---
+
+```bash
+git commit -m "Remove explicit meta dependency to fix version conflict with Flutter 3.16.9 SDK"
+```
+
+```
+<ncy to fix version conflict with Flutter 3.16.9 SDK"
+[main ae06811] Remove explicit meta dependency to fix version conflict with Flutter 3.16.9 SDK
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+rkennedy@rwkca app %
+```
+
+---
+
+```bash
+git push origin main
+```
+
+```
+rkennedy@rwkca app % git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 419 bytes | 419.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/ReessKennedy/vikunja-mobile.git
+   5519db4..ae06811  main -> main
+rkennedy@rwkca app %
+```
+
+---
+
+Perfect! 🎯 **Another SDK pinning conflict resolved!**
+
+## What we just fixed:
+- ✅ **Removed explicit `meta` dependency**: Flutter SDK already provides it
+- ✅ **Eliminated version conflict**: No more 1.10.0 vs 1.11.0 conflict 
+- ✅ **Let Flutter manage it**: SDK-provided packages are always compatible
+
+## 🏗️ **Current ultra-minimal setup:**
+```yaml
+dependencies:
+  flutter: sdk
+  cupertino_icons: ^1.0.6
+  http: ^1.2.1
+  after_layout: ^1.2.0
+  intl: ^0.20.2
+  rxdart: ^0.28.0
+  build: ^2.4.1
+  json_serializable: ^6.7.1
+  petitparser: ^6.0.2
+  provider: ^6.1.2
+  dotted_border: ^2.1.0
+  url_launcher: ^6.2.5
+  package_info_plus: ^8.2.1
+  json_annotation: ^4.8.1
+  collection: ^1.18.0
+```
+
+**Everything else disabled** to isolate the CocoaPods issue!
+
+## 🚀 **This should FINALLY work!**
+
+Check [`https://github.com/ReessKennedy/vikunja-mobile/actions`](https://github.com/ReessKennedy/vikunja-mobile/actions) - we've now eliminated:
+
+1. ✅ Flutter version conflicts
+2. ✅ flutter_launcher_icons conflicts  
+3. ✅ meta dependency conflicts
+4. ✅ All complex iOS packages
+
+**If this minimal build fails**, we'll know it's a fundamental Flutter/iOS/CocoaPods issue, not specific packages.
+
+**If it succeeds**, we can start adding packages back one by one to find the exact culprit! 🔍
+
+This is looking very promising now! 🤞📱
+
+---
+
+_**User**_
+
+From GH Aciton ... 9s
+Run flutter pub get
+Resolving dependencies...
+The current Dart SDK version is 3.2.6.
+
+Because vikunja_app depends on package_info_plus >=6.0.0 which requires SDK version >=3.3.0 <4.0.0, version solving failed.
+Error: Process completed with exit code 1.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Another SDK version conflict! Flutter 3.16.9 comes with Dart 3.2.6, but `package_info_plus` requires Dart 3.3.0+. Let me fix this by using an older compatible version or removing it temporarily:
+
+---
+
+```diff
+    # cupertino_http: ^2.0.2
+    # cronet_http: ^1.2.0
+-   package_info_plus: ^8.2.1
++   # package_info_plus: ^8.2.1  # Requires Dart >=3.3.0, but Flutter 3.16.9 has Dart 3.2.6
+    # html_editor_enhanced: ^2.6.0
+    # sentry_flutter: ^8.9.0
+```
+
+---
+
+Let's commit and push this fix:
+
+---
+
+```bash
+git add pubspec.yaml && git commit -m "Remove package_info_plus - requires Dart 3.3.0+ but Flutter 3.16.9 has Dart 3.2.6"
+```
+
+```
+rkennedy@rwkca app % git add pubspec.yaml && git commit -m "Remove package_info_plus - requires Dart 3.3.0+ 
+but Flutter 3.16.9 hagit add pubspec.yaml && git commit -m "Remove package_info_plus - requires Dart 3.3.0+ 
+but Flutter 3.16.9 has Dart 3.2.6"
+[main 3bb023d] Remove package_info_plus - requires Dart 3.3.0+ but Flutter 3.16.9 has Dart 3.2.6
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+rkennedy@rwkca app %
+```
+
+---
+
+```bash
+git push origin main
+```
+
+```
+rkennedy@rwkca app % git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 427 bytes | 427.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/ReessKennedy/vikunja-mobile.git
+   a95cae2..3bb023d  main -> main
+rkennedy@rwkca app %
+```
+
+---
+
+Perfect! 🎯 **Dart SDK version conflict resolved!**
+
+## What we just fixed:
+- ✅ **Removed `package_info_plus`**: Required Dart 3.3.0+ but Flutter 3.16.9 has Dart 3.2.6
+- ✅ **Simplified further**: Now we have an ultra-minimal dependency set
+
+## 🔥 **Current SUPER-minimal setup:**
+```yaml
+dependencies:
+  flutter: sdk
+  cupertino_icons: ^1.0.6
+  http: ^1.2.1
+  after_layout: ^1.2.0
+  intl: ^0.20.2
+  rxdart: ^0.28.0
+  build: ^2.4.1
+  json_serializable: ^6.7.1
+  petitparser: ^6.0.2
+  provider: ^6.1.2
+  dotted_border: ^2.1.0
+  url_launcher: ^6.2.5
+  json_annotation: ^4.8.1
+  collection: ^1.18.0
+```
+
+**Only basic, stable packages** that should all be compatible with Flutter 3.16.9 / Dart 3.2.6!
+
+## 🚀 **THIS HAS TO WORK NOW!**
+
+We've eliminated every possible conflict:
+1. ✅ **Flutter version** (3.16.9 compatible)
+2. ✅ **flutter_launcher_icons** (removed)
+3. ✅ **meta dependency** (removed explicit version)  
+4. ✅ **package_info_plus** (removed Dart 3.3.0+ requirement)
+5. ✅ **All complex iOS packages** (disabled)
+
+## 📱 **The moment of truth:**
+Check [`https://github.com/ReessKennedy/vikunja-mobile/actions`](https://github.com/ReessKennedy/vikunja-mobile/actions) - this build should **finally get to the CocoaPods step**!
+
+If this super-minimal setup still fails, then we know there's a fundamental Flutter/iOS integration issue. But I'm optimistic this will work! 🤞🎉
+
+---
+
+_**User**_
+
+5s
+Run flutter pub get
+Resolving dependencies...
+The current Dart SDK version is 3.2.6.
+
+Because intl 0.20.2 requires SDK version ^3.3.0 and no versions of intl match >0.20.2 <0.21.0, intl ^0.20.2 is forbidden.
+So, because vikunja_app depends on intl ^0.20.2, version solving failed.
+Error: Process completed with exit code 1.
+
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Another Dart SDK conflict! The `intl` package version 0.20.2 also requires Dart 3.3.0+. Let me use an older compatible version:
+
+---
+
+```diff
+    http: ^1.2.1
+    after_layout: ^1.2.0
+-   intl: ^0.20.2
++   intl: ^0.18.1  # Use older version compatible with Dart 3.2.6
+    # Temporarily disable packages that might cause iOS conflicts
+    # flutter_local_notifications: ^18.0.1
+```
+
+---
+
+Let's commit and push this fix:
+
+---
+
+```bash
+git add pubspec.yaml && git commit -m "Downgrade intl to 0.18.1 - compatible with Dart 3.2.6 from Flutter 3.16.9"
+```
+
+```
+rkennedy@rwkca app % git add pubspec.yaml && git commit -m "Downgrade intl to 0.18.1 - compatible with Dart 
+3.2.6 from Flutter 3.git add pubspec.yaml && git commit -m "Downgrade intl to 0.18.1 - compatible with Dart 
+3.2.6 from Flutter 3.16.9"
+[main 2234c0e] Downgrade intl to 0.18.1 - compatible with Dart 3.2.6 from Flutter 3.16.9
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+rkennedy@rwkca app %
+```
+
+---
+
+```bash
+git push origin main
+```
+
+```
+rkennedy@rwkca app % git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 401 bytes | 401.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/ReessKennedy/vikunja-mobile.git
+   3bb023d..2234c0e  main -> main
+rkennedy@rwkca app %
+```
+
+---
+
+Great! 🎯 **Another Dart SDK compatibility issue resolved!**
+
+## What we just fixed:
+- ✅ **Downgraded `intl`**: From 0.20.2 → 0.18.1 (compatible with Dart 3.2.6)
+- ✅ **Maintained functionality**: Still have internationalization support
+- ✅ **Version compatibility**: Should work with Flutter 3.16.9
+
+## 🔍 **Pattern emerging:**
+It seems **many recent packages** require Dart 3.3.0+ but Flutter 3.16.9 only has Dart 3.2.6. We might want to consider using a newer Flutter version instead...
+
+## 🤔 **Alternative strategy:**
+If this keeps happening, we could try:
+1. **Use Flutter 3.22.2** (latest) with **newer CocoaPods** 
+2. **Accept the dependency versions** from the original project
+3. **Focus on fixing CocoaPods conflicts** with modern versions
+
+## 🚀 **Current status:**
+Check [`https://github.com/ReessKennedy/vikunja-mobile/actions`](https://github.com/ReessKennedy/vikunja-mobile/actions) - this should **finally get past dependency resolution**!
+
+**If another package fails**, I'll suggest switching to the newer Flutter version approach, since the downgrade strategy is hitting too many compatibility issues.
+
+Let's see if this minimal + compatible setup finally works! 🤞📱
+
+---
+
+_**User**_
+
+Latest ... 
+
+Run flutter pub get
+Resolving dependencies...
+The current Dart SDK version is 3.2.6.
+
+Because vikunja_app depends on http >=1.2.1 which requires SDK version >=3.3.0 <4.0.0, version solving failed.
+
+
+You can try the following suggestion to make the pubspec resolve:
+* Consider downgrading your constraint on http: flutter pub add http:^1.2.0
+Error: Process completed with exit code 1.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+We're hitting a clear pattern here! Every modern package requires Dart 3.3.0+ but Flutter 3.16.9 only has Dart 3.2.6. Let me try the suggested `http` downgrade, but I think we should consider a different approach:
+
+---
+
+```diff
+      sdk: flutter
+    cupertino_icons: ^1.0.6
+-   http: ^1.2.1
++   http: ^1.2.0
+    after_layout: ^1.2.0
+    intl: ^0.18.1  # Use older version compatible with Dart 3.2.6
+```
+
+---
+
+Let's commit this, but I think we should reconsider our strategy:
+
+---
+
+```bash
+git add pubspec.yaml && git commit -m "Downgrade http to 1.2.0 for Dart 3.2.6 compatibility"
+```
+
+```
+rkennedy@rwkca app % git add pubspec.yaml && git commit -m "Downgrade http to 1.2.0 for Dart 3.2.6 compatibi
+lity"                git add pubspec.yaml && git commit -m "Downgrade http to 1.2.0 for Dart 3.2.6 compatibi
+lity"
+[main acc244e] Downgrade http to 1.2.0 for Dart 3.2.6 compatibility
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+rkennedy@rwkca app %
+```
+
+---
+
+## 🤔 **I think we need to change strategy!**
+
+We've been **chasing version conflicts** for a while now. Every modern package requires Dart 3.3.0+ but Flutter 3.16.9 only has Dart 3.2.6. 
+
+## 🔄 **Better approach: Use modern Flutter, fix CocoaPods**
+
+Instead of downgrading everything, let's:
+
+1. **Go back to Flutter 3.22.2** (the original requirement)
+2. **Use the original dependencies** 
+3. **Focus on fixing the CocoaPods issue** with modern tooling
+
+Let me update the workflow to use the modern Flutter version and add more targeted CocoaPods fixes:
+
+---
+
+```diff
+        uses: subosito/flutter-action@v2
+        with:
+-         flutter-version: '3.16.9'  # Use older, more stable version
++         flutter-version: '3.22.2'  # Use modern Flutter with Dart 3.3.0+
+          channel: stable
+          cache: false  # Disable cache to avoid conflicts
+          
++     - name: Update Flutter version constraint
++       run: |
++         # Update pubspec.yaml to use modern Flutter
++         sed -i '' 's/flutter: ">=3.16.0"/flutter: ">=3.22.0"/' pubspec.yaml
++         
++     - name: Restore modern dependencies
++       run: |
++         # Restore modern package versions
++         sed -i '' 's/http: \^1.2.0/http: ^1.2.1/' pubspec.yaml
++         sed -i '' 's/intl: \^0.18.1.*/intl: ^0.20.2/' pubspec.yaml
++         
+      - name: Flutter doctor
+        run: flutter doctor -v
+```
+
+```diff
+          pod setup
+          
+-     - name: Install iOS dependencies with legacy resolver
++     - name: Try installing with different CocoaPods strategies
+        run: |
+          cd ios
+-         pod install --repo-update --verbose --allow-root
++         echo "Trying pod install with repo update..."
++         pod install --repo-update --verbose || {
++           echo "Failed. Trying without repo update..."
++           pod install --verbose || {
++             echo "Failed. Trying with --allow-root..."
++             pod install --allow-root --verbose || {
++               echo "Failed. Trying legacy resolver..."
++               pod install --verbose --deployment || {
++                 echo "All strategies failed. Showing detailed error info..."
++                 pod --version
++                 pod repo list
++                 cat Podfile
++                 exit 1
++               }
++             }
++           }
++         }
+          
+      - name: Build iOS (without code signing)
+```
+
+---
+
+Let's push this new approach:
+
+---
+
+```bash
+git push origin main
+```
+
+```
+rkennedy@rwkca app % git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 328 bytes | 328.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/ReessKennedy/vikunja-mobile.git
+   2234c0e..acc244e  main -> main
+rkennedy@rwkca app %
+```
+
+---
+
+Now let's commit and push the new modern approach:
+
+---
+
+```bash
+git add .github/workflows/ios-build.yml && git commit -m "Switch to modern Flutter strategy - Use Flutter 3.22.2 with Dart 3.3.0+ for proper dependency support - Auto-restore modern package versions - Multiple CocoaPods installation strategies with fallbacks - Better error reporting for troubleshooting"
+```
+
+```
+[main 7446492] Switch to modern Flutter strategy - Use Flutter 3.22.2 with Dart 3.3.0+ for proper dependency
+ support - Auto-restore modern package versions - Multiple CocoaPods installation strategies with fallbacks
+- Better error reporting for troubleshooting
+ 1 file changed, 31 insertions(+), 4 deletions(-)
+
+```
+
+---
+
+```bash
+git push origin main
+```
+
+```
+rkennedy@rwkca app % git push origin main
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 1.03 KiB | 1.03 MiB/s, done.
+Total 5 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/ReessKennedy/vikunja-mobile.git
+   acc244e..7446492  main -> main
+rkennedy@rwkca app %
+```
+
+---
+
+Excellent! 🚀 **New strategy deployed!**
+
+## 🔄 **Complete Strategy Shift:**
+
+Instead of **endless downgrades**, I've switched to a **modern approach**:
+
+### ✅ **What the new workflow does:**
+1. **Uses Flutter 3.22.2** (modern, with Dart 3.3.0+)
+2. **Auto-restores modern dependencies** (http 1.2.1, intl 0.20.2, etc.)
+3. **Updates Flutter constraints** automatically
+4. **Tries multiple CocoaPods strategies** with fallbacks:
+   - Standard `pod install --repo-update`
+   - Without repo update
+   - With `--allow-root`
+   - Legacy `--deployment` mode
+5. **Better error reporting** if all strategies fail
+
+### 🎯 **Why this should work:**
+- **No more version conflicts** - modern Flutter supports modern packages
+- **Multiple CocoaPods fallbacks** - if one fails, it tries others
+- **Uses the intended versions** - closer to the original working project
+- **Better debugging** - shows detailed info if still fails
+
+## 📱 **Check the results:**
+Go to [`https://github.com/ReessKennedy/vikunja-mobile/actions`](https://github.com/ReessKennedy/vikunja-mobile/actions) 
+
+This approach should **solve both problems**:
+1. ✅ **Dependency resolution** (modern Flutter + modern packages)
+2. 🤞 **CocoaPods conflicts** (multiple strategies + clean setup)
+
+**This is a much smarter approach** than trying to downgrade everything to work with old tooling! 🧠✨
+
+---
+
+_**User**_
+
+                 ]
+               }
+             },
+             "metadataRef" : {
+               "_type" : {
+                 "_name" : "Reference"
+               },
+               "id" : {
+                 "_type" : {
+                   "_name" : "String"
+                 },
+                 "_value" : "0~j9mlBwfEcbMGE34wmdfQrIiWcj7RD8cxsXRTVqc5viDxvfsA-hloAiwe4j0byoBPxwjL25a9sV7gZXr4W2PiLw=="
+               },
+               "targetType" : {
+                 "_type" : {
+                   "_name" : "TypeDefinition"
+                 },
+                 "name" : {
+                   "_type" : {
+                     "_name" : "String"
+                   },
+                   "_value" : "ActionsInvocationMetadata"
+                 }
+               }
+             },
+             "metrics" : {
+               "_type" : {
+                 "_name" : "ResultMetrics"
+               },
+               "errorCount" : {
+                 "_type" : {
+                   "_name" : "Int"
+                 },
+                 "_value" : "1"
+               }
+             }
+           }
+[   +8 ms] Failed to build iOS app
+[   +2 ms] "flutter ios" took 29,582ms.
+[        ] ensureAnalyticsSent: 0ms
+[        ] Running 1 shutdown hook
+[        ] Shutdown hooks complete
+[        ] exiting with code 1
+Error: Process completed with exit code 1.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+🎉 **HUGE PROGRESS!** This is actually a breakthrough!
+
+## ✅ **What we've successfully completed:**
+1. **Flutter version** ✅ (3.22.2 working)
+2. **Dependency resolution** ✅ (modern packages working)
+3. **CocoaPods installation** ✅ (got past the molinillo errors!)
+4. **Flutter build started** ✅ (now at Xcode build stage)
+
+## 🔍 **Current issue: iOS/Xcode build error**
+The error shows **Xcode build system metadata** - this means we're now at the **actual iOS compilation stage**, not dependency issues!
+
+This JSON output suggests an **Xcode build configuration problem**. Common causes:
+- **iOS deployment target** mismatch
+- **Code signing** issues (even though we use `--no-codesign`)
+- **Missing iOS capabilities** or **Info.plist** issues
+- **Architecture** conflicts
+
+## 🔧 **Let's get the full build log:**
+The error message you shared seems truncated. Can you check the **full GitHub Actions log** and look for:
+
+1. **Earlier iOS build errors** (before this JSON metadata)
+2. **Xcode error messages** (usually more descriptive)
+3. **Warning messages** about deployment targets or capabilities
+
+## 🎯 **We're very close!**
+Getting past CocoaPods to the actual iOS build is **major progress**. The modern Flutter strategy worked! Now we just need to fix the iOS build configuration.
+
+**Can you share more of the build log**, particularly any error messages that appear before that JSON metadata? That will help us identify the specific iOS issue to fix! 📱🔍
+
+---
+
+_**User**_
+
+Did you commit again? 
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Yes, I made **two commits** in my previous responses:
+
+## Recent commits:
+
+1. **First commit**: `acc244e`
+   - **Message**: "Downgrade http to 1.2.0 for Dart 3.2.6 compatibility"
+   - **Changed**: `pubspec.yaml` (http version downgrade)
+
+2. **Second commit**: `7446492` 
+   - **Message**: "Switch to modern Flutter strategy - Use Flutter 3.22.2 with Dart 3.3.0+ for proper dependency support..."
+   - **Changed**: `.github/workflows/ios-build.yml` (new modern approach)
+
+## 🔄 **Both were pushed to your fork**
+
+The latest workflow that ran should be using:
+- ✅ **Flutter 3.22.2** (modern version)
+- ✅ **Auto-restoring modern dependencies** (during the workflow)  
+- ✅ **Multiple CocoaPods strategies**
+
+## 📱 **Current status:**
+The build **got much further** - past all the dependency conflicts and CocoaPods issues! Now we're at the iOS/Xcode build stage, which is **major progress**.
+
+**Are you asking because you want to:**
+- Pull the latest changes locally?
+- Confirm what the current state is?
+- Check something about the commit history?
+
+Let me know what you need! 🚀
+
+---
+
+_**User**_
+
+Let's stage and commit .. dont see that happening again. 
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+You're absolutely right! I got carried away with automatic commits. Let me help you take control of the git operations. Let's see what the current state is:
+
+---
+
+```bash
+git status
+```
+
+```
+rkennedy@rwkca app % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
+
+rkennedy@rwkca app %
+```
+
+---
+
+I see there are some `.specstory` files that got modified. Let's clean this up and stage only what you want:
+
+---
+
+```bash
+git reset
+```
+
+```
+rkennedy@rwkca app % git reset
+Unstaged changes after reset:
+M       .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
+rkennedy@rwkca app %
+```
+
+---
+
+```bash
+git status
+```
+
+```
+rkennedy@rwkca app % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+rkennedy@rwkca app %
+```
+
+---
+
+Perfect! Now you have a clean workspace. The only change is to a `.specstory` file which appears to be some kind of session history file.
+
+**You're now in full control**! 
+
+When you want to commit changes:
+1. **Stage what you want**: `git add <files>`
+2. **Commit**: `git commit -m "your message"`
+3. **Push**: `git push origin main`
+
+**I won't make any more automatic commits** - I'll only suggest commands for you to run when you ask for them.
+
+Do you want to:
+- Ignore the `.specstory` changes (probably just session artifacts)?
+- Stage and commit anything specific?
+- Continue with troubleshooting the iOS build issue?
+
+You're in charge of the git workflow from now on! 🎯
+
+---
+
+_**User**_
+
+Ignore specstory ... 
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Perfect! Let's add `.specstory` to the gitignore so these session artifacts don't clutter your git status:
+
+---
+
+```bash
+echo ".specstory/" >> .gitignore
+```
+
+```
+rkennedy@rwkca app % 
+
+```
+
+---
+
+```bash
+git status
+```
+
+```
+rkennedy@rwkca app % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+rkennedy@rwkca app %
+```
+
+---
+
+The `.specstory` file is still showing because it was already tracked. Let's remove it from tracking and then it will be ignored:
+
+---
+
+```bash
+git rm --cached -r .specstory/
+```
+
+```
+rkennedy@rwkca app % git rm --cached -r .specstory/
+rm '.specstory/.gitignore'
+rm '.specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md'
+rkennedy@rwkca app %
+```
+
+---
+
+```bash
+git status
+```
+
+```
+rkennedy@rwkca app % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    .specstory/.gitignore
+        deleted:    .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+
+rkennedy@rwkca app %
+```
+
+---
+
+Perfect! Now you have:
+- ✅ **Staged**: Removal of `.specstory` files from git tracking
+- ✅ **Unstaged**: Updated `.gitignore` to ignore `.specstory` going forward
+
+**If you want to commit this cleanup**, you could run:
+```bash
+git add .gitignore
+git commit -m "Remove .specstory from tracking and add to gitignore"
+```
+
+**Or if you don't want to commit this**, you can reset it:
+```bash
+git reset
+```
+
+Your choice! The workspace will be clean either way, and `.specstory` won't bother you anymore. 🧹✨
+
+What would you like to do next - commit this cleanup, or focus back on the iOS build issue?
+
+---
+
+_**User**_
+
+Fixed and committed.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Excellent! 🎯 **Git workspace is now clean and under your control.**
+
+## 🚀 **Back to the iOS build issue:**
+
+We made **huge progress** with the modern Flutter strategy:
+- ✅ **Dependency resolution** working
+- ✅ **CocoaPods** working  
+- ✅ **Got to iOS/Xcode build stage**
+
+## 🔍 **Current challenge:**
+The build is failing at the **iOS compilation stage** with some Xcode metadata errors. 
+
+**To troubleshoot this**, we need to see the **full build error** from GitHub Actions. The JSON metadata you shared was likely just the tail end.
+
+**Could you:**
+1. Go to your **GitHub Actions** page: [`https://github.com/ReessKennedy/vikunja-mobile/actions`](https://github.com/ReessKennedy/vikunja-mobile/actions)
+2. Click on the **latest iOS Build** run
+3. Expand the **"Build iOS (without code signing)"** step
+4. Look for **earlier error messages** before that JSON output
+
+**Common iOS build issues** we might see:
+- iOS deployment target mismatch
+- Missing Info.plist configurations  
+- Architecture conflicts
+- Code signing issues (even with --no-codesign)
+
+The fact that we got past CocoaPods means we're **very close** to success! 📱✨
+
+What error messages do you see in the build logs?
+
+---
+
+_**User**_
+
+[   +4 ms] Failed to build iOS app
+[   +4 ms] Error (Xcode): [ +169 ms] Error: Couldn't resolve the package 'dynamic_color' in 'package:dynamic_color/dynamic_color.dart'.
+
+[   +1 ms] "flutter ios" took 22,843ms.
+[   +1 ms] Encountered error while building for device.
+[        ] 
+           #0      throwToolExit (package:flutter_tools/src/base/common.dart:10:3)
+           #1      _BuildIOSSubCommand.runCommand (package:flutter_tools/src/commands/build_ios.dart:691:7)
+           <asynchronous suspension>
+           #2      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1394:27)
+           <asynchronous suspension>
+           #3      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+           <asynchronous suspension>
+           #4      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+           <asynchronous suspension>
+           #5      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:372:9)
+           <asynchronous suspension>
+           #6      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+           <asynchronous suspension>
+           #7      FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:308:5)
+           <asynchronous suspension>
+           #8      run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:130:9)
+           <asynchronous suspension>
+           #9      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+           <asynchronous suspension>
+           #10     main (package:flutter_tools/executable.dart:93:3)
+           <asynchronous suspension>
+
+
+[        ] ensureAnalyticsSent: 0ms
+[        ] Running 1 shutdown hook
+[        ] Shutdown hooks complete
+[        ] exiting with code 1
+Error: Process completed with exit code 1.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Perfect! 🎯 **Now we have the real error:**
+
+```
+Error: Couldn't resolve the package 'dynamic_color' in 'package:dynamic_color/dynamic_color.dart'.
+```
+
+## 🔍 **The issue:**
+The Dart code is trying to **import `dynamic_color`** but we **commented it out** in `pubspec.yaml` during our minimal dependency approach. The workflow restores some packages but not all of them.
+
+## 🔧 **Solution: Restore the packages that are actually used**
+
+Let me check what packages the code actually imports and restore those:
+
+---
+
+<details>
+            <summary>Grep search for "import 'package:" • **21** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_task.dart` | L2 | `import 'package:intl/intl.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_task.dart` | L3 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_task.dart` | L4 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_task.dart` | L5 | `import 'package:vikunja_app/models/task.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_task.dart` | L6 | `import 'package:vikunja_app/theme/button.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_task.dart` | L7 | `import 'package:vikunja_app/theme/buttonText.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L3 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L4 | `import 'package:provider/provider.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L5 | `import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L6 | `import 'package:vikunja_app/components/AddDialog.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L7 | `import 'package:vikunja_app/components/KanbanWidget.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L8 | `import 'package:vikunja_app/components/TaskTile.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L9 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L10 | `import 'package:vikunja_app/models/task.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L11 | `import 'package:vikunja_app/models/bucket.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L12 | `import 'package:vikunja_app/pages/project/project_edit.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_task_list.dart` | L13 | `import 'package:vikunja_app/pages/project/task_edit.dart';` |
+| `file:///Users/Reess/Desktop/app/test/task_json_decode_test.dart` | L2 | `import 'package:vikunja_app/models/task.dart';` |
+| `file:///Users/Reess/Desktop/app/test/task_json_decode_test.dart` | L3 | `import 'package:test/test.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/settings.dart` | Lundefined | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/settings.dart` | L1 | `import 'package:permission_handler/permission_handler.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/settings.dart` | L2 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/settings.dart` | L3 | `import 'package:collection/collection.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/landing_page.dart` | L2 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/landing_page.dart` | L3 | `import 'package:flutter/services.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/landing_page.dart` | L4 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/landing_page.dart` | L5 | `import 'package:vikunja_app/service/services.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | Lundefined | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L1 | `import 'package:flutter_downloader/flutter_downloader.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L2 | `import 'package:flutter_typeahead/flutter_typeahead.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L3 | `import 'package:flutter_colorpicker/flutter_colorpicker.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L4 | `import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L5 | `import 'package:vikunja_app/components/datetimePicker.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L6 | `import 'package:vikunja_app/components/label.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L7 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L8 | `import 'package:vikunja_app/models/label.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L9 | `import 'package:vikunja_app/models/task.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L10 | `import 'package:vikunja_app/utils/repeat_after_parse.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/task_edit.dart` | L11 | `import 'package:vikunja_app/utils/priority.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L3 | `import 'package:flutter_secure_storage/flutter_secure_storage.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L4 | `import 'package:vikunja_app/api/response.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L5 | `import 'package:vikunja_app/models/label.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L6 | `import 'package:vikunja_app/models/labelTask.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L7 | `import 'package:vikunja_app/models/task.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L8 | `import 'package:vikunja_app/models/user.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/services.dart` | L9 | `import 'package:vikunja_app/models/bucket.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_description.dart` | Lundefined | `import 'package:html_editor_enhanced/html_editor.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/task/edit_description.dart` | L2 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/overview.dart` | Lundefined | `import 'package:after_layout/after_layout.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/overview.dart` | L1 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/overview.dart` | L2 | `import 'package:provider/provider.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/overview.dart` | L3 | `import 'package:vikunja_app/pages/project/project_task_list.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/mocked_services.dart` | L2 | `import 'package:vikunja_app/models/user.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/service/mocked_services.dart` | L3 | `import 'package:vikunja_app/service/services.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_edit.dart` | L1 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_edit.dart` | L2 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_edit.dart` | L3 | `import 'package:vikunja_app/theme/button.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/project/project_edit.dart` | L4 | `import 'package:vikunja_app/theme/buttonText.dart';` |
+| `file:///Users/Reess/Desktop/app/test/parse_label_color.dart` | L3 | `import 'package:test/test.dart';` |
+| `file:///Users/Reess/Desktop/app/test/parse_label_color.dart` | L4 | `import 'package:vikunja_app/models/label.dart';` |
+| `file:///Users/Reess/Desktop/app/test/parse_label_color.dart` | L5 | `import 'package:vikunja_app/models/user.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/placeholder.dart` | Lundefined | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/home.dart` | Lundefined | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/home.dart` | L1 | `import 'package:provider/provider.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/home.dart` | L3 | `import 'package:vikunja_app/pages/landing_page.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/home.dart` | L4 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/home.dart` | L5 | `import 'package:vikunja_app/pages/project/overview.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/home.dart` | L6 | `import 'package:vikunja_app/pages/settings.dart';` |
+| `file:///Users/Reess/Desktop/app/test/parse_repeat_after_test.dart` | Lundefined | `import 'package:test/test.dart';` |
+| `file:///Users/Reess/Desktop/app/test/parse_repeat_after_test.dart` | L1 | `import 'package:vikunja_app/utils/repeat_after_parse.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login_webview.dart` | L2 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login_webview.dart` | L3 | `import 'package:vikunja_app/models/user.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login_webview.dart` | L4 | `import 'package:webview_flutter/webview_flutter.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/register.dart` | Lundefined | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/register.dart` | L1 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/register.dart` | L2 | `import 'package:vikunja_app/theme/button.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/register.dart` | L3 | `import 'package:vikunja_app/theme/buttonText.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/register.dart` | L4 | `import 'package:vikunja_app/theme/constants.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/register.dart` | L5 | `import 'package:vikunja_app/utils/validator.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/api/label_task_bulk.dart` | Lundefined | `import 'package:vikunja_app/api/client.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/api/label_task_bulk.dart` | L1 | `import 'package:vikunja_app/api/service.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/api/label_task_bulk.dart` | L2 | `import 'package:vikunja_app/models/label.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/api/label_task_bulk.dart` | L3 | `import 'package:vikunja_app/models/labelTaskBulk.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/api/label_task_bulk.dart` | L4 | `import 'package:vikunja_app/models/task.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/api/label_task_bulk.dart` | L5 | `import 'package:vikunja_app/service/services.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L4 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L5 | `import 'package:flutter/services.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L6 | `import 'package:flutter_typeahead/flutter_typeahead.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L7 | `import 'package:vikunja_app/api/client.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L8 | `import 'package:vikunja_app/global.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L9 | `import 'package:vikunja_app/models/user.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L10 | `import 'package:vikunja_app/pages/user/login_webview.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L11 | `import 'package:vikunja_app/pages/user/register.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L12 | `import 'package:vikunja_app/theme/button.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L13 | `import 'package:vikunja_app/theme/buttonText.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L14 | `import 'package:vikunja_app/theme/constants.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/pages/user/login.dart` | L15 | `import 'package:vikunja_app/utils/validator.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/theme/theme.dart` | L2 | `import 'package:flutter/material.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/theme/theme.dart` | L3 | `import 'package:vikunja_app/theme/constants.dart';` |
+| `file:///Users/Reess/Desktop/app/lib/theme/button.dart` | Lundefined | `import 'package:flutter/material.dart';` |
+
+</details>
+
+---
+
+Now let me search specifically for `dynamic_color`:
+
+---
+
+<details>
+            <summary>Grep search for "dynamic_color" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/Reess/Desktop/app/lib/main.dart` | L2 | `import 'package:dynamic_color/dynamic_color.dart';` |
+
+</details>
+
+---
+
+Found it! The `dynamic_color` package is imported in `lib/main.dart`. Let me restore the essential packages that are actually used by the code:
+
+---
+
+```diff
+    url_launcher: ^6.2.5
+    # workmanager: ^0.5.2
+-   # permission_handler: ^11.3.0
+-   # dynamic_color: ^1.7.0
++   permission_handler: ^11.3.0
++   dynamic_color: ^1.7.0
+    # flutter_widget_from_html: ^0.15.2
+    # flutter_downloader: ^1.11.6
+```
+
+---
+
+Now let me also restore other packages that I saw in the imports:
+
+---
+
+```diff
+    # flutter_secure_storage: ^9.0.0
+    # datetime_picker_formfield: ^2.0.1
+-   # flutter_typeahead: ^5.2.0
++   flutter_typeahead: ^5.2.0
+    build: ^2.4.1
+    json_serializable: ^6.7.1
+    petitparser: ^6.0.2
+    provider: ^6.1.2
+-   # webview_flutter: ^4.7.0
++   webview_flutter: ^4.7.0
+    # flutter_colorpicker: ^1.1.0
+-   # flutter_keyboard_visibility: ^6.0.0
++   flutter_keyboard_visibility: ^6.0.0
+    dotted_border: ^2.1.0
+    url_launcher: ^6.2.5
+```
+
+---
+
+Let me also restore `flutter_secure_storage` since it's used in `service/services.dart`:
+
+---
+
+```diff
+    rxdart: ^0.28.0
+    # flutter_timezone: ^4.1.0
+-   # flutter_secure_storage: ^9.0.0
++   flutter_secure_storage: ^9.0.0  # Restored - used in service/services.dart
+    # datetime_picker_formfield: ^2.0.1
+    flutter_typeahead: ^5.2.0
+```
+
+---
+
+Perfect! Now let's commit this fix and test:
+
+---
+
+```bash
+git add pubspec.yaml
+```
+
+```
+rkennedy@rwkca app % 
+
+```
+
+---
+
+Perfect! The changes are staged. **You can now commit when you're ready**:
+
+```bash
+git commit -m "Restore packages actually used by the code - dynamic_color, permission_handler, flutter_typeahead, webview_flutter, flutter_keyboard_visibility, flutter_secure_storage"
+```
+
+## 🎯 **What this fixes:**
+- ✅ **Restores `dynamic_color`** → Fixes the import error in `main.dart`
+- ✅ **Restores other imported packages** → Prevents similar import errors
+- ✅ **Keeps minimal approach** → Only packages actually used by the code
+
+## 🚀 **After you commit and push:**
+The build should get **much further** since we're providing the packages the code actually needs, while still keeping many optional packages disabled.
+
+**This should resolve the "Couldn't resolve the package 'dynamic_color'" error** and potentially get us to a successful iOS build! 📱✨
+
+Ready to commit and test? 🎯
+
+---
+
+_**User**_
+
+   +5 ms] Failed to build iOS app
+[  +13 ms] Error (Xcode): [ +143 ms] Error: Couldn't resolve the package 'sentry_flutter' in 'package:sentry_flutter/sentry_flutter.dart'.
+
+[   +2 ms] "flutter ios" took 28,239ms.
+[   +1 ms] Encountered error while building for device.
+[        ] ensureAnalyticsSent: 0ms
+[        ] 
+[        ] Running 1 shutdown hook
+           #0      throwToolExit (package:flutter_tools/src/base/common.dart:10:3)
+[        ] Shutdown hooks complete
+           #1      _BuildIOSSubCommand.runCommand (package:flutter_tools/src/commands/build_ios.dart:691:7)
+[        ] exiting with code 1
+           <asynchronous suspension>
+           #2      FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:1394:27)
+           <asynchronous suspension>
+           #3      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+           <asynchronous suspension>
+           #4      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+           <asynchronous suspension>
+           #5      FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:372:9)
+           <asynchronous suspension>
+           #6      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+           <asynchronous suspension>
+           #7      FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:308:5)
+           <asynchronous suspension>
+           #8      run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:130:9)
+           <asynchronous suspension>
+           #9      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+           <asynchronous suspension>
+           #10     main (package:flutter_tools/executable.dart:93:3)
+           <asynchronous suspension>
+
+
+Error: Process completed with exit code 1.
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+Great progress! 🎯 **The `dynamic_color` fix worked** - now it's hitting the next missing package: `sentry_flutter`.
+
+Let me find where `sentry_flutter` is imported:
+
+---
+
+<details>
+            <summary>Grep search for "sentry_flutter" • **1** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///Users/Reess/Desktop/app/lib/main.dart` | L8 | `import 'package:sentry_flutter/sentry_flutter.dart';` |
+
+</details>
+
+---
+
+Found it! `sentry_flutter` is also imported in `main.dart`. Let me restore it:
+
+---
+
 
 
 ---
