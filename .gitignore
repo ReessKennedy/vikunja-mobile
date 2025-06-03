@@ -110,3 +110,4 @@ local.properties
 # pre-commit
 .pre-commit-config.yaml
 .specstory/
+.specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
