@@ -15,7 +15,7 @@ dependencies:
   after_layout: ^1.2.0
   intl: ^0.18.1  # Use older version compatible with Dart 3.2.6
   # Temporarily disable packages that might cause iOS conflicts
-  # flutter_local_notifications: ^18.0.1
+  flutter_local_notifications: ^18.0.1  # Restored - might be essential for iOS builds
   rxdart: ^0.28.0
   # flutter_timezone: ^4.1.0
   flutter_secure_storage: ^9.0.0  # Restored - used in service/services.dart
@@ -26,7 +26,7 @@ dependencies:
   petitparser: ^6.0.2
   provider: ^6.1.2
   webview_flutter: ^4.7.0
-  # flutter_colorpicker: ^1.1.0
+  flutter_colorpicker: ^1.1.0  # Restored - used in task_edit.dart
   flutter_keyboard_visibility: ^6.0.0
   dotted_border: ^2.1.0
   url_launcher: ^6.2.5
@@ -38,7 +38,7 @@ dependencies:
   #     ref: main  # Use git version instead of pub.dev 0.5.2 - has updated iOS code
   permission_handler: ^11.3.0
   dynamic_color: ^1.7.0  # Restored - used in main.dart
-  # flutter_widget_from_html: ^0.15.2
+  flutter_widget_from_html: ^0.15.2  # Restored - used in task_edit.dart
   flutter_downloader: ^1.11.6  # Restored - used in main.dart
   # meta: ^1.11.0  # Remove explicit meta dependency - provided by Flutter SDK
   timezone: ^0.10.0  # Restored - used in main.dart
