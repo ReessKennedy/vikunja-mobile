@@ -122,12 +122,33 @@ jobs:
         APP_DIR=$(dirname "$APP_PATH")
         cd "$APP_DIR"
         
+        # Check app contents before zipping
+        echo "📋 Checking Runner.app contents..."
+        ls -la "$(basename "$APP_PATH")"
+        echo "📋 App size:"
+        du -sh "$(basename "$APP_PATH")"
+        
         mkdir -p Payload
         cp -r "$(basename "$APP_PATH")" Payload/
-        zip -r app-unsigned.ipa Payload/
+        
+        # Verify copy worked
+        echo "📋 Payload contents after copy:"
+        ls -la Payload/
+        echo "📋 Payload size:"
+        du -sh Payload/
+        
+        # Create IPA with verbose output and ensure all files are included
+        echo "📦 Creating IPA..."
+        zip -r -v app-unsigned.ipa Payload/
         
         echo "✅ Created IPA at: $APP_DIR/app-unsigned.ipa"
         ls -la app-unsigned.ipa
+        
+        # Verify IPA contents
+        echo "📋 IPA file info:"
+        file app-unsigned.ipa
+        echo "📋 IPA contents:"
+        unzip -l app-unsigned.ipa | head -20
         
     - name: Prepare IPA for upload
       run: |
