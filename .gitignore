@@ -112,7 +112,7 @@ local.properties
 .specstory/
 .specstory/** */
 .specstory/history/
-.specstory/history/** */
+.specstory/history/*
 .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
 .specstory/history/2025-06-03_19-48-packaging-dart-app-for-ios.md
 
