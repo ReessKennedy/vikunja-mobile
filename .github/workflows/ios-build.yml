@@ -100,18 +100,50 @@ jobs:
         }
         echo "✅ iOS build completed successfully!"
         
-    - name: Create unsigned IPA
+    - name: Find and create unsigned IPA
       run: |
-        cd build/ios/iphoneos
+        echo "🔍 Looking for iOS build output..."
+        find build -name "*.app" -type d | head -10
+        
+        echo "📱 Finding Runner.app location..."
+        APP_PATH=$(find build -name "Runner.app" -type d | head -1)
+        
+        if [ -z "$APP_PATH" ]; then
+          echo "❌ Could not find Runner.app"
+          echo "📋 Available build outputs:"
+          ls -la build/ || echo "No build directory"
+          find build -type d -name "*ios*" || echo "No iOS directories found"
+          exit 1
+        fi
+        
+        echo "✅ Found Runner.app at: $APP_PATH"
+        
+        # Create IPA in the same directory as the app
+        APP_DIR=$(dirname "$APP_PATH")
+        cd "$APP_DIR"
+        
         mkdir -p Payload
-        cp -r Runner.app Payload/
+        cp -r "$(basename "$APP_PATH")" Payload/
         zip -r app-unsigned.ipa Payload/
         
-    - name: Upload IPA artifact
+        echo "✅ Created IPA at: $APP_DIR/app-unsigned.ipa"
+        ls -la app-unsigned.ipa
+        
+    - name: Prepare IPA for upload
+      run: |
+        # Find the IPA file
+        IPA_PATH=$(find build -name "app-unsigned.ipa" | head -1)
+        echo "📱 IPA location: $IPA_PATH"
+        
+        # Copy to expected location for upload
+        mkdir -p artifacts
+        cp "$IPA_PATH" artifacts/app-unsigned.ipa
+        
+    - name: Upload IPA to artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ios-unsigned-ipa
-        path: build/ios/iphoneos/app-unsigned.ipa
+        path: artifacts/app-unsigned.ipa
         retention-days: 30
         
     - name: Build info
