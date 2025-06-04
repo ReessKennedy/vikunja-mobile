@@ -82,23 +82,68 @@ jobs:
         
     - name: Build iOS (without code signing)
       run: |
-        echo "🚀 Starting iOS build..."
-        flutter build ios --release --no-codesign --verbose 2>&1 | tee ios_build.log || {
-          echo "❌ iOS build failed. Showing detailed error information..."
-          echo "📋 Last 100 lines of build log:"
-          tail -100 ios_build.log
-          echo "🔍 Searching for specific error patterns..."
-          echo "📱 Swift errors:"
-          grep -i "swift.*error" ios_build.log || echo "No Swift errors found"
-          echo "📱 Xcode errors:" 
-          grep -i "error.*xcode" ios_build.log || echo "No Xcode errors found"
-          echo "📱 Compilation errors:"
-          grep -i "compilation.*failed\|error:" ios_build.log | head -20 || echo "No compilation errors found"
-          echo "📱 Build summary:"
-          grep -i "error.*count\|warning.*count" ios_build.log || echo "No error counts found"
-          exit 1
+        echo "�� Starting iOS build with extensive debugging..."
+        
+        echo "📋 Flutter doctor before build:"
+        flutter doctor -v
+        
+        echo "📋 Current directory contents:"
+        ls -la
+        
+        echo "📋 iOS directory contents before build:"
+        ls -la ios/
+        
+        echo "📋 Checking for any existing build artifacts:"
+        find . -name "*.app" -type d || echo "No .app files found"
+        
+        echo "📋 Starting Flutter iOS build..."
+        flutter build ios --release --no-codesign --verbose 2>&1 | tee flutter_build.log || {
+          echo "❌ Release build failed! Trying debug build..."
+          flutter build ios --debug --no-codesign --verbose 2>&1 | tee flutter_debug_build.log || {
+            echo "❌ Both release and debug builds failed!"
+            echo "📋 Release build errors:"
+            tail -30 flutter_build.log
+            echo "📋 Debug build errors:"
+            tail -30 flutter_debug_build.log
+            exit 1
+          }
+          echo "✅ Debug build succeeded where release failed!"
         }
-        echo "✅ iOS build completed successfully!"
+        
+        echo "📋 Build completed. Checking what was created:"
+        echo "📋 Build directory structure:"
+        find build -type d | head -20 || echo "No build directory"
+        
+        echo "📋 Looking for .app files:"
+        find build -name "*.app" -type d || echo "No .app files created!"
+        
+        echo "📋 iOS build directory contents:"
+        ls -la build/ios/ || echo "No build/ios directory"
+        
+        echo "📋 Release directory contents:"
+        ls -la build/ios/Release-iphoneos/ || echo "No Release-iphoneos directory"
+        
+        echo "📋 Debug directory contents:"
+        ls -la build/ios/Debug-iphoneos/ || echo "No Debug-iphoneos directory"
+        
+        # Check both release and debug locations
+        if [ -d "build/ios/Release-iphoneos/Runner.app" ]; then
+          echo "📋 Runner.app found in Release! Contents:"
+          ls -la build/ios/Release-iphoneos/Runner.app/
+          echo "📋 Runner.app file sizes:"
+          find build/ios/Release-iphoneos/Runner.app -type f -exec ls -la {} \;
+        elif [ -d "build/ios/Debug-iphoneos/Runner.app" ]; then
+          echo "📋 Runner.app found in Debug! Contents:"
+          ls -la build/ios/Debug-iphoneos/Runner.app/
+          echo "📋 Runner.app file sizes:"
+          find build/ios/Debug-iphoneos/Runner.app -type f -exec ls -la {} \;
+        else
+          echo "❌ Runner.app NOT FOUND in either Release or Debug!"
+          echo "📋 Trying to find any Runner.app:"
+          find . -name "Runner.app" -type d || echo "No Runner.app anywhere!"
+        fi
+        
+        echo "✅ iOS build debugging completed!"
         
     - name: Find and create unsigned IPA
       run: |

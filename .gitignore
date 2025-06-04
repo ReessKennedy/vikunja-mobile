@@ -119,3 +119,5 @@ local.properties
 # Swift/Xcode compilation errors
 Swift Compiler Error (Xcode): [actual error message]
 Error (Xcode): [actual error message]
+.specstory/
+.specstory/**
